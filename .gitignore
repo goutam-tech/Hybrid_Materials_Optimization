@@ -8,3 +8,13 @@ wheels/
 
 # Virtual environments
 .venv
+requirements_2.txt
+env/
+venv/
+myenv/
+
+# Python version management
+.python-version
+pyproject.toml
+PRD.md
+uv.lock 
