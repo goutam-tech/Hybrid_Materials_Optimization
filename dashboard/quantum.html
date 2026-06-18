@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Hybrid Materials Optimization | Quantum Models</title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+    <link href="css/style.css" rel="stylesheet" />
+  </head>
+  <body>
+    <nav
+      class="navbar navbar-dark border-bottom"
+      style="background: #0b1120; border-color: #233052"
+    >
+      <div class="container-fluid px-4">
+        <a class="navbar-brand navbar-brand-custom" href="index.html">
+          <span class="brand-mark"></span>Hybrid Materials Optimization
+        </a>
+        <span class="text-muted small"
+          >Classical + Quantum Materials Intelligence</span
+        >
+      </div>
+    </nav>
+
+    <div class="d-flex">
+      <div class="sidebar" style="width: 240px">
+        <nav class="nav flex-column">
+          <a class="nav-link" href="index.html">Home Dashboard</a>
+          <a class="nav-link" href="classical.html">Classical Models</a>
+          <a class="nav-link" href="quantum.html">Quantum Models</a>
+          <a class="nav-link" href="optimizer.html">Optimizer Comparison</a>
+          <a class="nav-link" href="recommendation.html"
+            >Final Recommendation</a
+          >
+        </nav>
+      </div>
+
+      <div class="main-content flex-grow-1">
+        <h1 class="page-title">Quantum Machine Learning Models</h1>
+        <p class="page-subtitle">
+          Quantum Neural Network (QNN), Variational Quantum Regressor (VQR) and
+          Quantum Kernel Regressor (QKR).
+        </p>
+
+        <div class="panel">
+          <div class="panel-title">Metrics Table</div>
+          <div class="table-responsive">
+            <table class="table table-dark-custom">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>MAE</th>
+                  <th>RMSE</th>
+                  <th>R²</th>
+                  <th>Training Time (s)</th>
+                  <th>Prediction Time (s)</th>
+                </tr>
+              </thead>
+              <tbody id="quantum-table-body">
+                <tr>
+                  <td colspan="6" class="loading-text">Loading metrics…</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="row g-3">
+          <div class="col-lg-4">
+            <div class="panel">
+              <div class="panel-title">Accuracy Comparison (R²)</div>
+              <canvas id="chart-accuracy" height="240"></canvas>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="panel">
+              <div class="panel-title">Runtime Comparison (Prediction)</div>
+              <canvas id="chart-runtime" height="240"></canvas>
+            </div>
+          </div>
+          <div class="col-lg-4">
+            <div class="panel">
+              <div class="panel-title">Training Time Comparison</div>
+              <canvas id="chart-training" height="240"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script>
+      async function init() {
+        try {
+          const metrics = await fetchJSON("/quantum-metrics");
+
+          const tbody = document.getElementById("quantum-table-body");
+          tbody.innerHTML = metrics
+            .map(
+              (m) => `
+      <tr>
+        <td><span class="badge-source badge-quantum">${m.model}</span></td>
+        <td>${formatNumber(m.MAE)}</td>
+        <td>${formatNumber(m.RMSE)}</td>
+        <td>${formatNumber(m.R2)}</td>
+        <td>${formatSeconds(m.training_time)}</td>
+        <td>${formatSeconds(m.prediction_time)}</td>
+      </tr>
+    `,
+            )
+            .join("");
+
+          const labels = metrics.map((m) => m.model);
+
+          barChart(document.getElementById("chart-accuracy"), labels, [
+            {
+              label: "R² Score",
+              data: metrics.map((m) => m.R2),
+              backgroundColor: PALETTE.quantum,
+              borderRadius: 6,
+            },
+          ]);
+
+          barChart(document.getElementById("chart-runtime"), labels, [
+            {
+              label: "Prediction Time (s)",
+              data: metrics.map((m) => m.prediction_time),
+              backgroundColor: PALETTE.good,
+              borderRadius: 6,
+            },
+          ]);
+
+          barChart(document.getElementById("chart-training"), labels, [
+            {
+              label: "Training Time (s)",
+              data: metrics.map((m) => m.training_time),
+              backgroundColor: PALETTE.warn,
+              borderRadius: 6,
+            },
+          ]);
+        } catch (err) {
+          console.error(err);
+        }
+      }
+      init();
+    </script>
+  </body>
+</html>
