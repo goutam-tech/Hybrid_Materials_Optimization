@@ -1,0 +1,24 @@
+# Core
+Python>=3.11
+
+# Backend / Web
+Flask==3.1.3
+Flask-Cors==4.0.1
+
+# Data
+pandas>=2.2,<3.1
+numpy>=1.26,<2.1
+openpyxl==3.1.5
+
+# Classical ML
+scikit-learn>=1.5,<1.9
+xgboost==3.2.0
+joblib>=1.3
+
+# Quantum ML / Optimization
+qiskit==1.2.4
+qiskit-machine-learning==0.7.2
+qiskit-algorithms==0.3.1
+qiskit-optimization==0.7.0
+pennylane==0.38.0
+autoray==0.8.11
