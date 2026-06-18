@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hybrid Materials Optimization | Optimizer Comparison</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<nav class="navbar navbar-dark border-bottom" style="background:#0b1120; border-color:#233052;">
+  <div class="container-fluid px-4">
+    <a class="navbar-brand navbar-brand-custom" href="index.html">
+      <span class="brand-mark"></span>Hybrid Materials Optimization
+    </a>
+    <span class="text-muted small">Classical + Quantum Materials Intelligence</span>
+  </div>
+</nav>
+
+<div class="d-flex">
+  <div class="sidebar" style="width:240px;">
+    <nav class="nav flex-column">
+      <a class="nav-link" href="index.html">Home Dashboard</a>
+      <a class="nav-link" href="classical.html">Classical Models</a>
+      <a class="nav-link" href="quantum.html">Quantum Models</a>
+      <a class="nav-link" href="optimizer.html">Optimizer Comparison</a>
+      <a class="nav-link" href="recommendation.html">Final Recommendation</a>
+    </nav>
+  </div>
+
+  <div class="main-content flex-grow-1">
+    <h1 class="page-title">Optimizer Comparison</h1>
+    <p class="page-subtitle">Newton's Method (classical) vs. QAOA (quantum) for material ranking optimization.</p>
+
+    <div class="row g-3 mb-3">
+      <div class="col-md-6">
+        <div class="panel">
+          <div class="panel-title">Newton's Method <span class="badge-source badge-classical">Classical</span></div>
+          <div class="mb-2"><span class="metric-label">Best Material</span><div class="metric-value" id="newton-best">—</div></div>
+          <div class="row">
+            <div class="col-6"><span class="metric-label">Runtime</span><div id="newton-runtime">—</div></div>
+            <div class="col-6"><span class="metric-label">Objective Score</span><div id="newton-objective">—</div></div>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel">
+          <div class="panel-title">QAOA <span class="badge-source badge-quantum">Quantum</span></div>
+          <div class="mb-2"><span class="metric-label">Best Material</span><div class="metric-value" id="qaoa-best">—</div></div>
+          <div class="row">
+            <div class="col-6"><span class="metric-label">Runtime</span><div id="qaoa-runtime">—</div></div>
+            <div class="col-6"><span class="metric-label">Objective Score</span><div id="qaoa-objective">—</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-3">
+      <div class="col-lg-6">
+        <div class="panel">
+          <div class="panel-title">Runtime Comparison</div>
+          <canvas id="chart-runtime" height="240"></canvas>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="panel">
+          <div class="panel-title">Objective Score Comparison</div>
+          <canvas id="chart-objective" height="240"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.4/chart.umd.min.js"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="js/dashboard.js"></script>
+<script>
+async function init() {
+  try {
+    const newton = await fetchJSON("/classical-optimizer");
+    const qaoa = await fetchJSON("/quantum-optimizer");
+
+    setText("newton-best", `${newton.best_material} (${newton.formula || ""})`);
+    setText("newton-runtime", formatSeconds(newton.runtime));
+    setText("newton-objective", formatNumber(newton.objective_score));
+
+    setText("qaoa-best", `${qaoa.best_material} (${qaoa.formula || ""})`);
+    setText("qaoa-runtime", formatSeconds(qaoa.runtime));
+    setText("qaoa-objective", formatNumber(qaoa.objective_score));
+
+    barChart(document.getElementById("chart-runtime"), ["Newton's Method", "QAOA"], [
+      { label: "Runtime (s)", data: [newton.runtime, qaoa.runtime], backgroundColor: [PALETTE.classical, PALETTE.quantum], borderRadius: 6 },
+    ]);
+
+    barChart(document.getElementById("chart-objective"), ["Newton's Method", "QAOA"], [
+      { label: "Objective Score", data: [newton.objective_score, qaoa.objective_score], backgroundColor: [PALETTE.classical, PALETTE.quantum], borderRadius: 6 },
+    ]);
+  } catch (err) {
+    console.error(err);
+  }
+}
+init();
+</script>
+</body>
+</html>
