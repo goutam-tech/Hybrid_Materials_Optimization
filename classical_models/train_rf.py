@@ -1,0 +1,80 @@
+"""Trains a Random Forest Regressor on the unified materials dataset."""
+
+from __future__ import annotations
+
+import logging
+import time
+from typing import Dict
+
+import joblib
+import numpy as np
+import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+
+from preprocessing import FEATURE_COLUMNS, TARGET_COLUMN, RANDOM_STATE
+
+logger = logging.getLogger(__name__)
+
+
+class RandomForestTrainer:
+    """Wraps training, prediction and metric computation for Random Forest."""
+
+    def __init__(self, random_state: int = RANDOM_STATE) -> None:
+        self.model = RandomForestRegressor(
+            n_estimators=200, max_depth=8, random_state=random_state, n_jobs=-1
+        )
+        self.random_state = random_state
+
+    def train(self, train_df: pd.DataFrame) -> float:
+        X_train = train_df[FEATURE_COLUMNS].values
+        y_train = train_df[TARGET_COLUMN].values
+        start = time.perf_counter()
+        self.model.fit(X_train, y_train)
+        elapsed = time.perf_counter() - start
+        logger.info("Random Forest trained in %.4fs", elapsed)
+        return elapsed
+
+    def predict(self, df: pd.DataFrame) -> tuple[np.ndarray, float]:
+        X = df[FEATURE_COLUMNS].values
+        start = time.perf_counter()
+        preds = self.model.predict(X)
+        elapsed = time.perf_counter() - start
+        return preds, elapsed
+
+    def evaluate(self, test_df: pd.DataFrame, preds: np.ndarray) -> Dict[str, float]:
+        y_true = test_df[TARGET_COLUMN].values
+        return {
+            "MAE": float(mean_absolute_error(y_true, preds)),
+            "RMSE": float(np.sqrt(mean_squared_error(y_true, preds))),
+            "R2": float(r2_score(y_true, preds)),
+        }
+
+    def save(self, path: str) -> None:
+        joblib.dump(self.model, path)
+        logger.info("Saved Random Forest model to %s", path)
+
+
+if __name__ == "__main__":
+    import os
+
+    logging.basicConfig(level=logging.INFO)
+    from data_loader import DataLoader
+    from preprocessing import Preprocessor
+
+    loader = DataLoader()
+    frames = loader.load_all()
+    pre = Preprocessor()
+    splits = pre.run(frames)
+
+    trainer = RandomForestTrainer()
+    train_time = trainer.train(splits["train"])
+    preds, pred_time = trainer.predict(splits["test"])
+    metrics = trainer.evaluate(splits["test"], preds)
+    metrics["Training Time"] = train_time
+    metrics["Prediction Time"] = pred_time
+    print(metrics)
+
+    out_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "models")
+    os.makedirs(out_dir, exist_ok=True)
+    trainer.save(os.path.join(out_dir, "rf.pkl"))
