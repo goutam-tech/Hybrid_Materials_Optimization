@@ -220,6 +220,29 @@ The dashboard will display:
 All quantum circuits run on Qiskit/PennyLane's local statevector simulators
 — no QPU access or external quantum cloud account is required.
 
+## 11. Images
+
+### Classical Model Training Images
+![classical Model Training](/images/classical_model_training.png)
+
+### Quantum Model Training Images
+![Quantum Model Training](/images/quantum_model_training.png)
+
+### Home Page
+![Home Page](/images/home.png)
+
+### Classical Model Page
+![Classical Model Page](/images/classical_model.png)
+
+### Quantum Model Page
+![Quantum Model Page](/images/quantum_model.png)
+
+### Optimizer Page
+![Optimizer Page](/images/optimizer.png)
+
+### Final Recommendation Page
+![Final Recommendation Page](/images/final_recommendation.png)
+
 ## Author
 
 Developed by **Goutam Parashuram Gotur**, a Computer Science student with a strong interest in Artificial Intelligence, Quantum Computing, Machine Learning, and Materials Science. This project explores the integration of Classical Machine Learning, Quantum Machine Learning, and Quantum Optimization techniques to predict material properties, optimize material selection, and recommend high-performance materials through an interactive web dashboard.
