@@ -10,15 +10,15 @@ results in a Bootstrap 5 + Chart.js dashboard served by a Flask backend.
 
 ## 1. Project Overview
 
-| Layer | Technology |
-|---|---|
-| Classical ML | scikit-learn (Random Forest, Gradient Boosting), XGBoost |
-| Quantum ML | PennyLane (QNN, VQR), Qiskit Machine Learning (QKR) |
-| Classical Optimization | Newton's Method (custom implementation) |
-| Quantum Optimization | QAOA via `qiskit-optimization` / `qiskit-algorithms` |
-| Backend | Flask REST API |
-| Frontend | HTML5, CSS3, Bootstrap 5, Chart.js |
-| Export | OpenPyXL (`exports/results.xlsx`) |
+| Layer                  | Technology                                               |
+| ---------------------- | -------------------------------------------------------- |
+| Classical ML           | scikit-learn (Random Forest, Gradient Boosting), XGBoost |
+| Quantum ML             | PennyLane (QNN, VQR), Qiskit Machine Learning (QKR)      |
+| Classical Optimization | Newton's Method (custom implementation)                  |
+| Quantum Optimization   | QAOA via `qiskit-optimization` / `qiskit-algorithms`     |
+| Backend                | Flask REST API                                           |
+| Frontend               | HTML5, CSS3, Bootstrap 5, Chart.js                       |
+| Export                 | OpenPyXL (`exports/results.xlsx`)                        |
 
 The pipeline: load datasets → clean/merge/select 50 materials → 80/20 split
 → train 3 classical + 3 quantum regressors → build ensembles → optimize
@@ -170,16 +170,16 @@ or, on failure:
 { "status": "error", "message": "..." }
 ```
 
-| Method | Endpoint | Description |
-|---|---|---|
-| GET | `/api/classical-metrics` | MAE/RMSE/R²/timings for RF, XGBoost, GB |
-| GET | `/api/classical-predictions` | Per-material predictions + ensemble score |
-| GET | `/api/quantum-metrics` | MAE/RMSE/R²/timings for QNN, VQR, QKR |
-| GET | `/api/quantum-predictions` | Per-material predictions + quantum ensemble |
-| GET | `/api/classical-optimizer` | Newton's Method summary (best material, runtime, objective) |
-| GET | `/api/quantum-optimizer` | QAOA summary (best material, runtime, iterations, objective) |
-| GET | `/api/recommendations` | Top 10 materials + best classical/quantum/final picks |
-| GET | `/api/dashboard-summary` | Aggregated KPIs for the Home Dashboard |
+| Method | Endpoint                     | Description                                                  |
+| ------ | ---------------------------- | ------------------------------------------------------------ |
+| GET    | `/api/classical-metrics`     | MAE/RMSE/R²/timings for RF, XGBoost, GB                      |
+| GET    | `/api/classical-predictions` | Per-material predictions + ensemble score                    |
+| GET    | `/api/quantum-metrics`       | MAE/RMSE/R²/timings for QNN, VQR, QKR                        |
+| GET    | `/api/quantum-predictions`   | Per-material predictions + quantum ensemble                  |
+| GET    | `/api/classical-optimizer`   | Newton's Method summary (best material, runtime, objective)  |
+| GET    | `/api/quantum-optimizer`     | QAOA summary (best material, runtime, iterations, objective) |
+| GET    | `/api/recommendations`       | Top 10 materials + best classical/quantum/final picks        |
+| GET    | `/api/dashboard-summary`     | Aggregated KPIs for the Home Dashboard                       |
 
 ---
 
@@ -219,3 +219,13 @@ The dashboard will display:
 
 All quantum circuits run on Qiskit/PennyLane's local statevector simulators
 — no QPU access or external quantum cloud account is required.
+
+## Author
+
+Developed by **Goutam Parashuram Gotur**, a Computer Science student with a strong interest in Artificial Intelligence, Quantum Computing, Machine Learning, and Materials Science. This project explores the integration of Classical Machine Learning, Quantum Machine Learning, and Quantum Optimization techniques to predict material properties, optimize material selection, and recommend high-performance materials through an interactive web dashboard.
+
+### Contact
+
+- Name: Goutam Parashuram Gotur
+- GitHub: https://github.com/goutam-tech
+- Email: goutamgotur2006@gmail.com

@@ -17,4 +17,6 @@ myenv/
 .python-version
 pyproject.toml
 PRD.md
-uv.lock 
+uv.lock
+300
+uv
